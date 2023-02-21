@@ -26,55 +26,59 @@ selectMenu[0].value = initialHour;
 selectMenu[1].value = initialMinute;
 
 setInterval(() => {
-  let date = new Date();
-  const h = date.getHours(),
-    m = date.getMinutes(),
-    s = date.getSeconds();
-  currentTime.innerText = formatDate(date);
+  const now = new Date();
+  currentTime.innerText = formatDate(now);
 
-  const alarm = alarmTime.split(':');
-  const difHour = alarm[0] - (h == 0 ? 24 : h);
-  const difMinute = alarm[1] - m;
-  const difSec = 60 - s;
-  timer.innerText = `${difHour}:${difMinute}:${difSec}`;
+  if (alarmTime) {
+    let timeDiff = Math.abs(now.getTime() - alarmTime.getTime());
+    const diffInHours = timeDiff / (1000 * 3600);
+    const diffHours = Math.floor(diffInHours);
+    const diffMinutes = Math.floor((diffInHours - diffHours) * 60);
+    const diffSeconds = Math.ceil((diffInHours - (diffHours + diffMinutes / 60)) * 3600);
+    timer.innerText = `${addLeadingZeros(diffHours)}:${addLeadingZeros(diffMinutes)}:${addLeadingZeros(diffSeconds)}`;
+  }
+  else 
+    timer.innerText = "00:00:00";
 
-  if (alarmTime === `${h}:${m}`) {
+  if (alarmTime && alarmTime <= now) {
     ringtone.play();
     ringtone.loop = true;
+    alarmTime = null;
   }
 });
 
 function setAlarm() {
   if (isAlarmSet) {
-    alarmTime = "";
+    alarmTime = null;
     ringtone.pause();
     content.classList.remove("disable");
     setAlarmBtn.innerText = "Definir Alarme";
     return (isAlarmSet = false);
   }
 
-  let time = `${selectMenu[0].value}:${selectMenu[1].value}`;
-  if (
-    time.includes("Hour") ||
-    time.includes("Minute")
-  ) {
+  const hour = selectMenu[0].value;
+  const minute = selectMenu[1].value;
+  if (hour.includes("Hour") || minute.includes("Minute"))
     return alert("Por favor, selecione um horário válido!");
-  }
-  alarmTime = time;
+
+  const now = new Date();
+  alarmTime = new Date(`${now.getUTCFullYear()}-${addLeadingZeros(now.getUTCMonth() + 1)}-${now.getUTCDate()}T${hour}:${minute}:00.000`);
+
+  if (alarmTime < now)
+    alarmTime.setDate(alarmTime.getDate() + 1);
+
   isAlarmSet = true;
   content.classList.add("disable");
   setAlarmBtn.innerText = "Limpar Alarme";
 }
 
 function formatDate(date) {
-  let h = date.getHours(),
-    m = date.getMinutes(),
-    s = date.getSeconds();
+  let h = date.getHours(), m = date.getMinutes(), s = date.getSeconds();
+  return `${addLeadingZeros(h)}:${addLeadingZeros(m)}:${addLeadingZeros(s)}`;
+}
 
-  h = h < 10 ? "0" + h : h;
-  m = m < 10 ? "0" + m : m;
-  s = s < 10 ? "0" + s : s;
-  return `${h}:${m}:${s}`;
+function addLeadingZeros(number) {
+  return number < 10 ? "0" + number : number;
 }
 
 setAlarmBtn.addEventListener("click", setAlarm);
