@@ -37,7 +37,7 @@ setInterval(() => {
     const diffSeconds = Math.ceil((diffInHours - (diffHours + diffMinutes / 60)) * 3600);
     timer.innerText = `${addLeadingZeros(diffHours)}:${addLeadingZeros(diffMinutes)}:${addLeadingZeros(diffSeconds)}`;
   }
-  else 
+  else
     timer.innerText = "00:00:00";
 
   if (alarmTime && alarmTime <= now) {
@@ -52,6 +52,7 @@ function setAlarm() {
     alarmTime = null;
     ringtone.pause();
     content.classList.remove("disable");
+    setAlarmBtn.classList.remove("clean-button")
     setAlarmBtn.innerText = "Definir Alarme";
     return (isAlarmSet = false);
   }
@@ -69,6 +70,7 @@ function setAlarm() {
 
   isAlarmSet = true;
   content.classList.add("disable");
+  setAlarmBtn.classList.add("clean-button")
   setAlarmBtn.innerText = "Limpar Alarme";
 }
 

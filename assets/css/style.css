@@ -35,13 +35,13 @@ body {
 }
 
 .wrapper h1 {
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 500;
   margin: 15px 0;
 }
 
 .wrapper h2 {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 300;
   margin: 5px 0;
 }
@@ -87,4 +87,8 @@ body {
   margin-top: 20px;
   border-radius: 5px;
   background: #034efe;
+}
+
+.clean-button {
+  background: #fe4203 !important;
 }
