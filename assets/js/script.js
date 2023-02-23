@@ -7,8 +7,7 @@ const currentTime = document.querySelector("h2"),
   initialMinute = '05';
 
 let alarmTime,
-  isAlarmSet,
-  ringtone = new Audio("assets/audio/ringtone.mp3");
+  isAlarmSet;
 
 for (let i = 23; i >= 0; i--) {
   i = i < 10 ? `0${i}` : i;
@@ -41,8 +40,9 @@ setInterval(() => {
     timer.innerText = "00:00:00";
 
   if (alarmTime && alarmTime <= now) {
-    ringtone.play();
-    ringtone.loop = true;
+    // ringtone.play();
+    // ringtone.loop = true;
+    timer.classList.add("alarm-went-off")
     alarmTime = null;
   }
 });
@@ -50,7 +50,8 @@ setInterval(() => {
 function setAlarm() {
   if (isAlarmSet) {
     alarmTime = null;
-    ringtone.pause();
+    // ringtone.pause();
+    timer.classList.remove("alarm-went-off")
     content.classList.remove("disable");
     setAlarmBtn.classList.remove("clean-button")
     setAlarmBtn.innerText = "Definir Alarme";

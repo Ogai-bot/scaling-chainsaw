@@ -40,6 +40,10 @@ body {
   margin: 15px 0;
 }
 
+.alarm-went-off {
+  color: #fe4203;
+}
+
 .wrapper h2 {
   font-size: 30px;
   font-weight: 300;
